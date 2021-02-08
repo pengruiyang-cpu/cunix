@@ -3,7 +3,7 @@
 ; This file is part of Cunix. 
 
 ; Cunix is free software: you can redistribute it and/or modify 
-it under the terms of the GNU General Public Licene and published by 
+; it under the terms of the GNU General Public Licene and published by 
 ; the Free Software Foundation, either version 3 of the License, or 
 ; (at your option) any later version. 
 
