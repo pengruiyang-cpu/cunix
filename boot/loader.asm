@@ -20,6 +20,8 @@
 
 org 0x8000
 
+%include "paging.asm"
+
 bits 16
 
 _start:	
@@ -69,32 +71,32 @@ init_protect_mode:
 .to_long_mode:
 	; page map at 0x7000
 	; set pagemap level-4
-	mov dword [0x70000], 0x71007
+	mov dword [0x70000], 0x71000 | PAGE_USER
 	mov dword [0x70004], 0x00000
-	mov dword [0x70800], 0x70007
+	mov dword [0x70800], 0x70000 | PAGE_USER
 	mov dword [0x70804], 0x00000
 
 	; ...and, page directory pointer table
-	mov dword [0x71000], 0x72007
+	mov dword [0x71000], 0x72000 | PAGE_USER
 	mov dword [0x71008], 0x00000
 
 	; then, page directory entry (2 MB size)
-	mov dword [0x72000], 0x000083
+	mov dword [0x72000], 0x000000 | PAGE_KERNEL
 	mov dword [0x72004], 0x000000
 
-	mov dword [0x72008], 0x200083
+	mov dword [0x72008], 0x200000 | PAGE_KERNEL
 	mov dword [0x7200c], 0x000000
 
-	mov dword [0x72010], 0x400083
+	mov dword [0x72010], 0x400000 | PAGE_KERNEL
 	mov dword [0x72014], 0x000000
 
-	mov dword [0x72018], 0x600083
+	mov dword [0x72018], 0x600000 | PAGE_KERNEL
 	mov dword [0x7201c], 0x000000
 	
-	mov dword [0x72020], 0x800083
+	mov dword [0x72020], 0x800000 | PAGE_KERNEL
 	mov dword [0x72024], 0x000000
 	
-	mov dword [0x72028], 0xa00083
+	mov dword [0x72028], 0xa00000 | PAGE_KERNEL
 	mov dword [0x7202c], 0x000000
 	
 	
@@ -151,15 +153,6 @@ e:
 	
 
 message: db "Cunix is loading...", 0x0d, 0x0a, 0x00
-t32_message: db "changing to protect mode...", 0x00
-ok_message: db "OK", 0x0d, 0x0a, 0x00
-fail_message: db "FAILED", 0x0d, 0x0a, 0x00
-
-
-display_point: dw 0x0000
-cur_position: db 0x00
-line_position: db 0x00
-
 
 gdt32:
 	dd 0x00000000, 0x00000000

@@ -68,12 +68,10 @@ print:
 
 
 load_loader:
-	mov ax, 0x0201
-	mov dx, 0x0000
-	mov dl, [BI_BOOTDEV]
-	mov cx, 0x0002
+	mov cl, 0x02
 	mov bx, 0x8000
-	int 0x13
+
+	call read_sector_chs
 
 	mov di, diskpanic_message
 
@@ -82,24 +80,37 @@ load_loader:
 	ret
 
 .try_lba:
-	mov ax, 0x0002
-	mov cl, 0x0001
+	mov cl, 0x02
 	mov bx, 0x8000
-	call read_lba
+	call read_sector_lba
 
 	jc panic
 	ret
 
-read_lba:
+read_sector_chs:
+	mov ax, 0x0201
+	xor ch, ch
+	; CL is argument `start sector`
+	xor dh, dh
+
+	mov dl ,[BI_BOOTDEV]
+
+	int 0x13
+	ret
+	
+
+read_sector_lba:
 	push dword 0x00000000
-	push dword eax
+	; ECX is argument `LBA address`
+	push dword ecx
 	push word es
 	push word bx
-	push word cx
+	; 1 sector
+	push word 0x0001
 	push word 0x0010
 
 	mov ah, 0x42
-	mov dl, 0x00
+	mov dl, [BI_BOOTDEV]
 	mov si, sp
 	int 0x13
 	add sp, 0x10
