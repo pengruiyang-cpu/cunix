@@ -23,4 +23,6 @@ Cunix kernel
 `0.451s-boot`:  
 &#9`boot` can load 8 sectors (4KB) of loader (not 1 sector).  
 
+`0.466s-boot`:
+&#9rebuild `boot`
 </pre>
