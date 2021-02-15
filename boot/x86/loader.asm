@@ -20,6 +20,8 @@
 
 org 0x8000
 
+jmp _start
+
 %include "arch/x86/segment.inc"
 %include "arch/x86/paging.inc"
 
@@ -29,15 +31,34 @@ _start:
 	mov si, message
 	call print
 
-.to_protect_mode:
+; init segment register fs
+.init_fs:
 	; enable A20 address 20 line
-.open_a20
+.open_a20:
 	in al, 0x92
-	or al, 2
-	out  0x92, al
+	or al, 0x02
+	out 0x92, al
 
 	cli
 	lgdt [gdt32_descriptor]
+	mov eax, cr0
+	or eax, 0x01
+	mov cr0, eax
+	
+	mov ax, data32
+	mov fs, ax
+
+	mov eax, cr0
+	and eax, 11111111111111111111111111111110b
+	mov cr0, eax
+
+	; interrupt is disable
+	
+	; now, FS has addressing out of 1MB like protect-mode. 
+	
+
+.to_protect_mode:
+	; GDT is already load by .init_fs
 
 	mov eax, cr0
 	; set CR0.bit 1 (Protect-mode Enable)

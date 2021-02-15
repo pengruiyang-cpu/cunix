@@ -23,6 +23,14 @@ Cunix kernel
 `0.451s-boot`:  
 &#9`boot` can load 8 sectors (4KB) of loader (not 1 sector).  
 
-`0.466s-boot`:
+`0.466s-boot`:  
 &#9rebuild `boot`
+
+`0.487s-boot`:  
+&#9`loader` let FS can access 4GB memory in real-mode. because 
+&#9`loader` loaded GDT and load a data-segment to fs, then disable
+&#9protect-mode. 
+
 </pre>
+
+
