@@ -19,4 +19,6 @@ Cunix kernel
 `0.432s-boot`: 
 	make directory `include/`, and add segment.inc, but it doesn't work. :-)
 
+`0.451s-boot`: 
+	`boot` can load 8 sectors (4KB) of loader (not 1 sector). 
 

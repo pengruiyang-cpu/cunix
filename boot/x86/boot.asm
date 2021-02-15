@@ -71,21 +71,40 @@ load_loader:
 	mov cl, 0x02
 	mov bx, 0x8000
 
+.read_loop:
 	call read_sector_chs
 
 	mov di, diskpanic_message
 
 	jc .try_lba
 
+; read 8 sectors
+	add cl, 0x02
+	add bx, 0x0200
+
+	cmp cl, 0x0a
+	je .ret
+
+	jmp .read_loop
+
+.ret:
 	ret
+	
 
 .try_lba:
-	mov cl, 0x02
-	mov bx, 0x8000
 	call read_sector_lba
 
 	jc panic
-	ret
+
+	add cl, 0x02
+	add bx, 0x0200
+	
+	cmp cl, 0x0a
+	je .ret
+	
+	jmp .read_loop
+	
+	
 
 read_sector_chs:
 	mov ax, 0x0201
