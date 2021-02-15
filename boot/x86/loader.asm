@@ -20,7 +20,8 @@
 
 org 0x8000
 
-%include "paging.asm"
+%include "arch/x86/segment.inc"
+%include "arch/x86/paging.inc"
 
 bits 16
 

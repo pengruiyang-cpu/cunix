@@ -1,5 +1,6 @@
+ASM_FLAGS = -I ../../include/
+
 remake: 
-	echo "*** If there isn't 'bootloader.bin', use 'make first' ***"
 	rm bootloader.bin
 	make cunix.img
 
@@ -7,10 +8,10 @@ first:
 	make cunix.img
 
 boot.bin: boot.asm
-	nasm boot.asm -o boot.bin
+	nasm boot.asm -o boot.bin $(ASM_FLAGS)
 
 loader.bin: loader.asm
-	nasm loader.asm -o loader.bin
+	nasm loader.asm -o loader.bin $(ASM_FLAGS)
 
 bootloader.bin: boot.bin loader.bin
 	cat boot.bin loader.bin >> bootloader.bin

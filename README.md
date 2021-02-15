@@ -16,3 +16,7 @@ Cunix kernel
 	`loader` forgot open A20 line, so `0.385` and `0.362` just can 
 	use 1MB memory like real-mode. 
 
+`0.432s-boot`: 
+	make directory `include/`, and add segment.inc, but it doesn't work. :-)
+
+
