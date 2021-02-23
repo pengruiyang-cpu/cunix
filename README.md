@@ -45,6 +45,9 @@ Cunix kernel
 `0.509s-kernel`: 
 &#9load kernel to 0x8200-0x9200 for 4KB, kernel.asm display 'K' to screen. 
 
+`0.556s-int`: 
+&#9init IDT at 0x0000-0x1000, and set all handler at ignore_int, but it do nothing. 
+
 </pre>
 
 
