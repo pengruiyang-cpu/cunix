@@ -18,19 +18,13 @@
 
 
 
+%define DISK_CHS
+
 BI_BOOTDEV equ 0x7e00
 
 read_sector:
-	; CH is sector number
-	call read_sector_chs
-	jc .try_lba
 
-	ret
-
-.try_lba:
-	call read_sector_lba
-	ret
-
+%ifdef DISK_CHS
 read_sector_chs:
 	mov ax, 0x0201
 	xor ch, ch
@@ -41,6 +35,8 @@ read_sector_chs:
 	
 	int 0x13
 	ret
+
+%else
 
 read_sector_lba:
 	push dword 0x00000000
@@ -59,4 +55,5 @@ read_sector_lba:
 
 	ret
 
+%endif
 
