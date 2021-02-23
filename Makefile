@@ -6,3 +6,7 @@ all:
 clear:
 	rm boot/x86/*.bin kernel/*.bin cunix.img
 
+
+lines:
+	wc boot/x86/boot.asm boot/x86/loader.asm kernel/kernel.asm include/arch/x86/* -l
+

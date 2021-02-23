@@ -42,7 +42,7 @@ Cunix kernel
 &#9let `readdisk.inc` smaller, but we just can use CHS or LBA, not both. 
 
 
-`0.490s-kernel`: 
+`0.509s-kernel`: 
 &#9load kernel to 0x8200-0x9200 for 4KB, kernel.asm display 'K' to screen. 
 
 </pre>
