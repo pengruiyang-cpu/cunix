@@ -175,9 +175,7 @@ init_long_mode:
 	mov ss, ax
 	mov rsp, 0x0000000000007c00
 
-e:
-	hlt
-	jmp e
+	jmp 0x8200
 	
 
 message: db "Cunix is loading...", 0x0d, 0x0a, 0x00
@@ -220,4 +218,5 @@ code64 equ gdt64_code - gdt64
 data64 equ gdt64_data - gdt64
 
 
+times 512 - ($ - $$) db 0x00
 

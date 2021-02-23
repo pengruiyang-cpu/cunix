@@ -77,8 +77,8 @@ load_loader:
 	call read_sector
 	jc panic
 
-; read 8 sectors
-	add cl, 0x02
+; read 9 sectors (1 loader, 8 kernel)
+	add cl, 0x01
 	add bx, 0x0200
 
 	cmp cl, 0x0a

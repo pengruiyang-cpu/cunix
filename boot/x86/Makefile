@@ -2,10 +2,10 @@ ASM_FLAGS = -I ../../include/
 
 remake: 
 	rm bootloader.bin
-	make cunix.img
+	make first
 
 first: 
-	make cunix.img
+	make bootloader.bin
 
 boot.bin: boot.asm
 	nasm boot.asm -o boot.bin $(ASM_FLAGS)
@@ -13,13 +13,8 @@ boot.bin: boot.asm
 loader.bin: loader.asm
 	nasm loader.asm -o loader.bin $(ASM_FLAGS)
 
-bootloader.bin: boot.bin loader.bin
+bootloader.bin: boot.bin loader.bin 
 	cat boot.bin loader.bin >> bootloader.bin
 
-cunix.img: bootloader.bin
-	dd if=/dev/zero of=cunix.img bs=1024 count=1440
-	dd if=bootloader.bin of=cunix.img conv=notrunc
-
-
 clear:
-	rm *.bin cunix.img
+	rm *.bin 
