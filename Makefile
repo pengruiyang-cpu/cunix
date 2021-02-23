@@ -1,5 +1,5 @@
 all:
-	touch boot/bootloader.bin
-	make -C boot/
+	touch boot/x86/bootloader.bin
+	make -C boot/x86/
 
 
