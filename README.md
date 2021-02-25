@@ -14,7 +14,7 @@ Cunix kernel
 
 
 `0.391s-boot`:  
-&nbsp;&nbsp;&nbsp;&nbsp;loader` forgot open A20 line, so `0.385` and `0.362` just can
+&nbsp;&nbsp;&nbsp;&nbsp;`loader` forgot open A20 line, so `0.385` and `0.362` just can
 &nbsp;&nbsp;&nbsp;&nbsp;use 1MB memory like real-mode.  
 
 
@@ -28,7 +28,7 @@ Cunix kernel
 
 `0.466s-boot`:  
 &nbsp;&nbsp;&nbsp;&nbsp;rebuild `boot`
-
+    
 
 `0.487s-boot`:  
 &nbsp;&nbsp;&nbsp;&nbsp;`loader` let FS can access 4GB memory in real-mode. because 
@@ -44,7 +44,8 @@ Cunix kernel
 &nbsp;&nbsp;&nbsp;&nbsp;load kernel to 0x8200-0x9200 for 4KB, kernel.asm display 'K' to screen. 
 
 `0.556s-int`: 
-&nbsp;&nbsp;&nbsp;&nbsp;init IDT at 0x0000-0x1000, and set all handler at ignore_int, but it do nothing.
+&nbsp;&nbsp;&nbsp;&nbsp;init IDT at 0x0000-0x1000, and set all handler at `ignore_int`, but it do nothing. 
 
 `0.619s-boot`: 
-&nbsp;&nbsp;&nbsp;&nbsp;load 180KB of disk, not 4KB. 
+&nbsp;&nbsp;&nbsp;&nbsp;load 180KB of disk, not 4KB
+
