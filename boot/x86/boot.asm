@@ -17,6 +17,8 @@
 
 
 
+CYLINDERS_NEED equ 10
+
 org 0x7c00
 
 _start:
@@ -38,7 +40,7 @@ _start:
 	mov si, message
 	call print
 
-	call load_loader
+	call read_it
 
 	jmp 0x0000:0x8000
 
@@ -67,28 +69,89 @@ print:
 	ret
 
 
-load_loader:
-	mov cl, 0x02
-	mov bx, 0x8000
+read_it:
+	; segment address of loader+kernel
+	mov ax, 0x0800
+	mov es, ax
 
-	mov di, diskpanic_message
+	; cylinder 0
+	mov ch, 0
+	; header 0
+	mov dh, 0
+	; start sector 2
+	mov cl, 2
 
 .read_loop:
-	call read_sector
-	jc panic
+	; I know it use to save source-address, but there isn't another 
+	; register free. 
 
-; read 9 sectors (1 loader, 8 kernel)
-	add cl, 0x01
-	add bx, 0x0200
+	; error counts
+	mov si, 0
 
-	cmp cl, 0x0a
-	je .ret
+.retry:
+	mov ah, 0x02
+	; one sector
+	mov al, 1
 
-	jmp .read_loop
+	; offset 0x0000
+	mov bx, 0
 
-.ret:
-	ret
+	; boot device
+	mov dl, [BI_BOOTDEV]
+
+	; call -> BIOS
+	int 0x13
+
+	; if error
+	jnc .cont_read
 	
+.error:
+	add si, 1
+	; we try it for 5 times
+	mov di, diskpanic_message
+
+	cmp si, 5
+	jae panic
+
+.reset_disk:
+	mov ah, 0x00
+	mov dl, [BI_BOOTDEV]
+
+	int 0x13
+
+	; and retry
+
+	jmp .retry
+
+.cont_read:
+	; add for 0x0020 (not 0x0200)
+	mov ax, es
+	add ax, 0x0020
+	mov es, ax
+
+	; we've been read one sector
+	add cl, 1
+
+	; if read done
+SECTORS_1_TRACK equ 18
+	cmp cl, SECTORS_1_TRACK
+	jbe .read_loop
+
+.update_track:
+	mov cl, 1
+	add dh, 1
+HEADS_1_CYLINDER equ 2
+	cmp dh, HEADS_1_CYLINDER
+	
+	jb .read_loop
+
+.update_head
+	mov dh, 0
+	add ch, 1
+	cmp ch, CYLINDERS_NEED
+	jb .read_loop
+
+	ret
 
 panic:
 	mov si, panic_message
