@@ -49,5 +49,5 @@ Cunix kernel
 `0.619s-boot`: 
 &nbsp;&nbsp;&nbsp;&nbsp;load 180KB of disk, not 4KB <br/>
 
-`0.540s-kernel`:
+`0.566s-kernel`:
 &nbsp;&nbsp;&nbsp;&nbsp;write in C. <br/>
