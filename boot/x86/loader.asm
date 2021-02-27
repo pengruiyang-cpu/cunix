@@ -28,37 +28,18 @@ jmp _start
 bits 16
 
 _start:	
-	mov si, message
-	call print
+	call set_vga_mode
 
-; init segment register fs
-.init_fs:
 	; enable A20 address 20 line
 .open_a20:
 	in al, 0x92
 	or al, 0x02
 	out 0x92, al
 
+.to_protect_mode:
 	cli
 	lgdt [gdt32_descriptor]
-	mov eax, cr0
-	or eax, 0x01
-	mov cr0, eax
-	
-	mov ax, data32
-	mov fs, ax
 
-	mov eax, cr0
-	and eax, 11111111111111111111111111111110b
-	mov cr0, eax
-
-	; interrupt is disable
-	
-	; now, FS has addressing out of 1MB like protect-mode. 
-	
-
-.to_protect_mode:
-	; GDT is already load by .init_fs
 
 	mov eax, cr0
 	; set CR0.bit 1 (Protect-mode Enable)
@@ -82,6 +63,13 @@ print:
 	jmp print
 
 .do_ret:
+	ret
+
+set_vga_mode:
+	mov al, 0x13
+	mov ah, 0x00
+	int 0x10
+
 	ret
 
 bits 32
@@ -176,9 +164,6 @@ init_long_mode:
 	mov rsp, 0x0000000000007c00
 
 	jmp 0x8200
-	
-
-message: db "Cunix is loading...", 0x0d, 0x0a, 0x00
 
 gdt32:
 	dd 0x00000000, 0x00000000
