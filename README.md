@@ -51,3 +51,6 @@ Cunix kernel
 
 `0.566s-kernel`:
 &nbsp;&nbsp;&nbsp;&nbsp;write in C. <br/>
+
+`0.790s-kernel`:
+&nbsp;&nbsp;&nbsp;&nbsp;make some structs <br/>
