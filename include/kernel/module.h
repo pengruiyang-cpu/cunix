@@ -24,17 +24,23 @@
 
 
 
+#ifndef INCLUDED_MODULE_H
+#define INCLUDED_MODULE_H
+
 #include <kernel/init.h>
 #include <kernel/types.h>
 #include <kernel/errno.h>
 
-#include <kernel/vgatext.h>
-#include <kernel/print.h>
 
-void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
+#define INIT_MODULE(modn) { \
+	.open = modn##_open, \
+	.creat = modn##_creat, \
+	.fill = modn##_fill, \
+	.read = modn##_read, \
+	.write = modn##_write, \
+	.lseek = modn##_lseek, \
+	.close = modn##_close \
+};
 
-	for (;;);
-}
+
+#endif

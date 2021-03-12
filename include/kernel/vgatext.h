@@ -24,3 +24,36 @@
 
 
 
+#ifndef INCLUDED_VGA_H
+#define INCLUDED_VGA_H
+
+
+#include <kernel/init.h>
+#include <kernel/errno.h>
+#include <kernel/types.h>
+#include <kernel/module.h>
+
+
+#define TEXT_VGA_X 80
+
+
+
+extern struct file_operations vga;
+
+struct vga_inode {
+	struct inode_desc inode;
+
+	/* frame buffer start address */
+	/* frame buffer in text mode: 
+	   char ASCII | char COLOR
+	*/
+
+	/* but use char is easier */
+
+	__uint8_t *fb;
+
+	__uint32_t x, y;
+};
+
+#endif
+

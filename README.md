@@ -9,7 +9,7 @@ Cunix kernel
 &nbsp;&nbsp;&nbsp;&nbsp;it uses `2MB` page to make 0-12 MB memory to `0x0000 - 0xc0000`. <br/>
 
 
-`0.385s-boot`: 
+`0.385s-boot`:  
 &nbsp;&nbsp;&nbsp;&nbsp;rebuild `boot` and `loader`. <br/>
 
 
@@ -36,21 +36,25 @@ Cunix kernel
 &nbsp;&nbsp;&nbsp;&nbsp;protect-mode. <br/>
 
 
-`0.484s-boot`:
+`0.484s-boot`:  
 &nbsp;&nbsp;&nbsp;&nbsp;let `readdisk.inc` smaller, but we just can use CHS or LBA, not both. <br/>
 
 
-`0.509s-kernel`: 
+`0.509s-kernel`:   
 &nbsp;&nbsp;&nbsp;&nbsp;load kernel to 0x8200-0x9200 for 4KB, kernel.asm display 'K' to screen. <br/>
 
-`0.556s-int`: 
+`0.556s-int`:  
 &nbsp;&nbsp;&nbsp;&nbsp;init IDT at 0x0000-0x1000, and set all handler at `ignore_int`, but it do nothing. <br/>
 
-`0.619s-boot`: 
+`0.619s-boot`:  
 &nbsp;&nbsp;&nbsp;&nbsp;load 180KB of disk, not 4KB <br/>
 
-`0.566s-kernel`:
+`0.566s-kernel`:  
 &nbsp;&nbsp;&nbsp;&nbsp;write in C. <br/>
 
-`0.790s-kernel`:
+`0.790s-kernel`:  
 &nbsp;&nbsp;&nbsp;&nbsp;make some structs <br/>
+
+`1.384s-hal`:  
+&nbsp;&nbsp;&nbsp;&nbsp;use text VGA mode, and make a file-operations of it. 
+

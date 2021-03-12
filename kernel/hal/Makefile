@@ -1,8 +1,6 @@
-C_FLAGS = -mcmodel=large -fno-builtin -m64 
+all: vgatext/vgatext.c 
+	make -C vgatext/
 
-all: terminal.c
-
-%.o: %.c
-	gcc -c $*.c $(C_FLAGS)
-
+clear:
+	make -C vgatext/ clear
 

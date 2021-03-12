@@ -5,11 +5,14 @@ all:
 	make cunix.img
 
 clear:
-	rm *.bin boot/x86/*.bin kernel/*.o kernel/*.bin kernel/init/*.o kernel/hal/*.o cunix.img -rf
+	make -C kernel/ clear
+	make -C boot/x86/ clear
+	rm cunix.img boot.bin
+
 
 
 lines:
-	wc boot/x86/boot.asm boot/x86/loader.asm kernel/init/*.c kernel/hal/*.c include/arch/x86/* include/kernel/* -l
+	wc boot/x86/boot.asm boot/x86/loader.asm kernel/init/*.c kernel/lib/*.c kernel/hal/vgatext/*.c include/arch/x86/* include/arch/*.h include/kernel/* include/lib/* -l
 
 
 cunix.img: boot/x86/bootloader.bin kernel/kernel.bin

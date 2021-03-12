@@ -18,3 +18,4 @@ bootloader.bin: boot.bin loader.bin
 
 clear:
 	rm *.bin 
+

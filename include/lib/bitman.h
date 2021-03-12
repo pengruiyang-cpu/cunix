@@ -24,17 +24,10 @@
 
 
 
-#include <kernel/init.h>
-#include <kernel/types.h>
-#include <kernel/errno.h>
+struct bitmap_manager {
+	unsigned char *bitmap;
+	unsigned int next_free;
+};
 
-#include <kernel/vgatext.h>
-#include <kernel/print.h>
-
-void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
-
-	for (;;);
-}
+unsigned int bitman_alloc(struct bitmap_manager *bm);
+void bitman_free(struct bitmap_manager *bm, unsigned int pos);

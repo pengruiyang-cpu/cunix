@@ -24,6 +24,9 @@
 
 
 
+#ifndef INCLUDED_TYPES_H
+#define INCLUDED_TYPES_H
+
 #define NULL (void *) 0
 
 
@@ -44,4 +47,6 @@ typedef __ushort_t 	__uint16_t;
 typedef __uint_t 	__uint32_t;
 typedef __ulong_t 	__uint64_t;
 
+
+#endif
 

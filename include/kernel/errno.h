@@ -24,6 +24,9 @@
 
 
 
+#ifndef INCLUDED_ERRNO_H
+#define INCLUDED_ERRNO_H
+
 typedef __uint32_t errno_t;
 
 
@@ -31,36 +34,45 @@ typedef __uint32_t errno_t;
 #define E_KERROR 0x20000000
 
 /* error io port */
-#define E_IOERROR 0x00000001
+#define E_IOERROR 0x00000001 | E_KERROR
 
 /* no enough memory for this call */
-#define E_NOMEM	  0x00000002
+#define E_NOMEM	  0x00000002 | E_KERROR
 
 /* call interrupted by signal */
-#define E_SIGNAL  0x00000003
+#define E_SIGNAL  0x00000003 | E_KERROR
+
+/* kernel not supported */
+#define E_NOSUPP  0x00000004 | E_KERROR
 
 
 /* no permision */
 #define E_DENIED 0x40000000
 
 /* need root to call this */
-#define E_NDROOT 0x00000001
+#define E_NDROOT 0x00000001 | E_DENIED
 
 /* no io passport */
-#define E_IODND  0x00000002
+#define E_IODND  0x00000002 | E_DENIED
 
 /* need hardware super 0 */
-#define E_HARDSP 0x00000003
+#define E_HARDSP 0x00000003 | E_DENIED
+
+/* hardware no support */
+#define E_HNOSUP 0x00000004 | E_DENIED
 
 /* user error (caller) */
-#define E_UERROR 0x80000000
+#define E_UERROR 0x80000000 | E_UERROR
+
 
 /* syntax error for this call (invalid argument) */
-#define E_SYNERR 0x00000001
+#define E_SYNERR 0x00000001 | E_UERROR
 
 /* error because address is invalid */
-#define E_ADDRE  0x00000002
+#define E_ADDRE  0x00000002 | E_UERROR
 
 /* call out of range */
-#define E_OUTRAG 0x000000003
+#define E_OUTRAG 0x00000003 | E_UERROR
+
+#endif
 

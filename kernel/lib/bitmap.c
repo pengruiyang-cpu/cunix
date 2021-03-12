@@ -24,17 +24,21 @@
 
 
 
-#include <kernel/init.h>
 #include <kernel/types.h>
-#include <kernel/errno.h>
 
-#include <kernel/vgatext.h>
-#include <kernel/print.h>
-
-void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
-
-	for (;;);
+void bitmap_set(unsigned char *bitmap, unsigned int pos, unsigned char value) {
+	unsigned char mask = 0x80 >> (pos & 0x7);
+	if (value) {
+		bitmap[pos >> 3] |= mask;
+	}
+	else {
+		bitmap[pos >> 3] &= ~mask;
+	}
 }
+
+char bitmap_read(unsigned char *bitmap, unsigned int pos) {
+	unsigned char mask = 0x80 >> (pos & 0x7);
+
+	return (mask & bitmap[pos >> 3]) == mask ? 1 : 0;
+}
+

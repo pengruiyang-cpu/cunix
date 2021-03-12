@@ -24,19 +24,13 @@
 
 
 
+#ifndef INCLUDED_INIT_H
+#define INCLUDED_INIT_H
+
+
 #include <kernel/types.h>
 #include <kernel/errno.h>
 
-
-
-#define MAKE_MODULE(name) struct file_operations name##_fop = { \
-	.open = name##_open; \
-	.creat = name##_create; \
-	.read = name##_read; \
-	.write = name##_write; \
-	.lseek = name##_lseek; \
-	.close = name##_close; \
-};
 
 
 struct inode_desc {
@@ -48,7 +42,7 @@ struct inode_desc {
 	/* file descriptor */
 	__uint32_t fd;
 
-	/* this is optional */
+	/* this is optional (offset) */
 	__uint32_t off;
 
 	/* this is optional too */
@@ -56,16 +50,18 @@ struct inode_desc {
 };
 
 
-struct file_oprerations {
+struct file_operations {
 	/* open a file */
 	struct inode_desc * (* open) (char *name, __uint32_t type, __uint32_t mode, __uint32_t *errno);
-	struct inode_desc * (* open) (__uint32_t type, __uint32_t mode, __uint32_t *errno);
 
 	/* or create one */
 
 	/* `creat` doesn't return file-descriptor, it returns errno */
 	errno_t (* creat) (char *name, __uint32_t type, __uint32_t mode);
-	errno_t (* creat) (__uint32_t type, __uint32_t mode);
+
+	/* `fill` fills a inode descriptor */
+	errno_t (* fill) (char *name, __uint32_t type, __uint32_t mode, struct inode_desc *i);
+
 
 	/* read from file-descriptor */
 	errno_t (* read) (struct inode_desc *i, char *buffer, __uint64_t l);
@@ -76,10 +72,17 @@ struct file_oprerations {
 	/* change position */
 
 	/* 'seg' = whence */
+
+#define SEEK_SET 0x0001
+#define SEEK_CUR 0x0002
+#define SEEK_END 0x0003
+
 	__uint32_t (* lseek) (struct inode_desc *i, __uint32_t off, __uint32_t seg);
 
 	/* close a file-descriptor */
 	void (* close) (struct inode_desc *i);
 };
 
+
+#endif
 

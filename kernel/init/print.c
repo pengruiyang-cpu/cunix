@@ -29,12 +29,12 @@
 #include <kernel/errno.h>
 
 #include <kernel/vgatext.h>
-#include <kernel/print.h>
 
-void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
 
-	for (;;);
+errno_t print(struct vga_inode *inode, char *s) {
+	for (; *s; s++) {
+		vga.write(inode, s, 1);
+	}
+
+	return 0;
 }

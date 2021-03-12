@@ -24,17 +24,7 @@
 
 
 
-#include <kernel/init.h>
-#include <kernel/types.h>
-#include <kernel/errno.h>
+#include <lib/bitmap.h>
+#include <lib/bitman.h>
 
-#include <kernel/vgatext.h>
-#include <kernel/print.h>
 
-void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
-
-	for (;;);
-}

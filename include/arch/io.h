@@ -23,18 +23,42 @@
 
 
 
+#ifndef INCLUDED_IO_H
+#define INCLUDED_IO_H
 
-#include <kernel/init.h>
 #include <kernel/types.h>
-#include <kernel/errno.h>
 
-#include <kernel/vgatext.h>
-#include <kernel/print.h>
 
-void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
+typedef __uint16_t port_t;
 
-	for (;;);
-}
+
+#define inb(port) ({ \
+	__uint8_t _r; \
+	__asm__ volatile ("inb %%dx, %%al" : "=a" (_r) : "d" (port)); \
+	_r; \
+})
+
+#define inw(port) ({ \
+	__uint16_t _r; \
+	__asm__ volatile ("inw %%dx, %%ax" : "=a" (_r) : "d" (port)); \
+	_r; \
+})
+
+#define inl(port) ({ \
+	__uint32_t _r; \
+	__asm__ volatile ("inl %%dx, %%eax" : "=a" (_r) : "d" (port)); \
+	_r; \
+})
+
+
+#define outb(value, port) \
+	__asm__ volatile ("outb %%al, %%dx" :: "a" (value), "d" (port));
+
+#define outw(value, port) \
+	__asm__ volatile ("outw %%ax, %%dx" :: "a" (value), "d" (port));
+
+#define outl(value, port) \
+	__asm__ volatile ("outl %%eax, %%dx" :: "a" (value), "d" (port));
+
+
+#endif

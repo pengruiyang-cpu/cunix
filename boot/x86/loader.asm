@@ -28,8 +28,6 @@ jmp _start
 bits 16
 
 _start:	
-	call set_vga_mode
-
 	; enable A20 address 20 line
 .open_a20:
 	in al, 0x92
@@ -65,12 +63,6 @@ print:
 .do_ret:
 	ret
 
-set_vga_mode:
-	mov al, 0x13
-	mov ah, 0x00
-	int 0x10
-
-	ret
 
 bits 32
 

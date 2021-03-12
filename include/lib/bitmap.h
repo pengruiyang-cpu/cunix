@@ -24,17 +24,7 @@
 
 
 
-#include <kernel/init.h>
-#include <kernel/types.h>
-#include <kernel/errno.h>
+extern char *bitmap_init(unsigned int size);
+extern void bitmap_set(unsigned char *bitmap, unsigned int pos, unsigned char value);
+extern char bitmap_read(unsigned char *bitmap, unsigned int pos);
 
-#include <kernel/vgatext.h>
-#include <kernel/print.h>
-
-void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
-
-	for (;;);
-}
