@@ -58,3 +58,6 @@ Cunix kernel
 `1.384s-hal`:  
 &nbsp;&nbsp;&nbsp;&nbsp;use text VGA mode, and make a file-operations of it. 
 
+`1.440s-lib`:  
+&nbsp;&nbsp;&nbsp;&nbsp;make some macros about assembly
+

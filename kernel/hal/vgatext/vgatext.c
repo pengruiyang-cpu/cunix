@@ -38,6 +38,8 @@
 
 
 __uint32_t next_fd = 1;
+struct vga_inode stdout;
+
 
 struct inode_desc *vga_open(char *name, __uint32_t type, __uint32_t mode, errno_t *errno) {
 	*errno = -E_NOSUPP;
@@ -137,9 +139,9 @@ errno_t vga_write(struct vga_inode *inode, char *buffer, __uint64_t l) {
 }
 
 
-errno_t vga_lseek(struct inode_desc *inode, __uint32_t off, __uint32_t seg) {
-	return -E_HNOSUP;
-}
+extern errno_t vga_lseek(struct inode_desc *inode, __uint32_t off, __uint32_t seg);
+
+__asm__ ("vga_lseek: ret\n");
 
 
 void vga_close(struct inode_desc *inode) {

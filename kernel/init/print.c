@@ -31,9 +31,9 @@
 #include <kernel/vgatext.h>
 
 
-errno_t print(struct vga_inode *inode, char *s) {
+errno_t print(char *s) {
 	for (; *s; s++) {
-		vga.write(inode, s, 1);
+		vga.write(&stdout, s, 1);
 	}
 
 	return 0;

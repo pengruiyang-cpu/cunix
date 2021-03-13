@@ -40,6 +40,7 @@
 
 extern struct file_operations vga;
 
+
 struct vga_inode {
 	struct inode_desc inode;
 
@@ -54,6 +55,8 @@ struct vga_inode {
 
 	__uint32_t x, y;
 };
+
+extern struct vga_inode stdout;
 
 #endif
 

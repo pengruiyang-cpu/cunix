@@ -28,13 +28,16 @@
 #include <kernel/types.h>
 #include <kernel/errno.h>
 
+#include <kernel/int.h>
 #include <kernel/vgatext.h>
 #include <kernel/print.h>
 
+
+
+
 void init(void) {
-	struct vga_inode vi;
-	vga.fill(NULL, 0, 0, &vi);
-	print(&vi, "kernel starting\n");
+	vga.fill(NULL, 0, 0, &stdout);
+	print("kernel starting\n");
 
 	for (;;);
 }

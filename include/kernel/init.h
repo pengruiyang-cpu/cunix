@@ -33,6 +33,10 @@
 
 
 
+#define KERNEL_CS 0x0008
+#define KERNEL_DS 0x0010
+
+
 struct inode_desc {
 	/* this struct is a general descriptor, so we must know
 	 * how big is it. */

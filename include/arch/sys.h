@@ -23,17 +23,22 @@
 
 
 
-
-#ifndef INCLUDED_PRINT_H
-#define INCLUDED_PRINT_H
-
+#ifndef INCLUDED_SYS_H
+#define INCLUDED_SYS_H
 
 #include <kernel/types.h>
-#include <kernel/errno.h>
 
-#include <kernel/vgatext.h>
 
-__uint32_t print(char *s);
+#define sgdt(addr) __asm__ __volatile__ ("sgdt %0" : "=m" (addr) : :)
+#define lgdt(addr) __asm__ __volatile__ ("lgdt %0" : : "m" (addr))
+
+#define sidt(addr) __asm__ __volatile__ ("sidt %0" : "=m" (addr) : :)
+#define lidt(addr) __asm__ __volatile__ ("lidt %0" : : "m" (addr))
+
+
+#define pause() __asm__ __volatile__ ("pause");
+#define nop() __asm__ __volatile__ ("nop");
+#define hlt() __asm__ __volatile__ ("hlt");
+
 
 #endif
-
