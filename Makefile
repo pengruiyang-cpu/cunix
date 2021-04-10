@@ -12,7 +12,7 @@ clear:
 
 
 lines:
-	wc boot/x86/boot.asm boot/x86/loader.asm kernel/init/*.c kernel/lib/*.c kernel/hal/vgatext/*.c include/arch/x86/* include/arch/*.h include/kernel/* include/lib/* -l
+	wc -l `find ./ -name *.c -o -name *.asm -o -name *.s -o -name *.inc -o -name *.h`
 
 
 cunix.img: boot/x86/bootloader.bin kernel/kernel.bin

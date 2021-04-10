@@ -33,7 +33,7 @@
 
 errno_t print(char *s) {
 	for (; *s; s++) {
-		vga.write(&stdout, s, 1);
+		vga_write(&stdout, s, 1);
 	}
 
 	return 0;

@@ -1,6 +1,6 @@
 OUTPUT_FORMAT("elf64-x86-64","elf64-x86-64", "elf64-x86-64")
 OUTPUT_ARCH(i386:x86-64)
-ENTRY(init)
+ENTRY(_start)
 
 SECTIONS {
 	. = 0x0000 + 0x8200;

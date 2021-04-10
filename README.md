@@ -56,8 +56,11 @@ Cunix kernel
 &nbsp;&nbsp;&nbsp;&nbsp;make some structs <br/>
 
 `1.384s-hal`:  
-&nbsp;&nbsp;&nbsp;&nbsp;use text VGA mode, and make a file-operations of it. 
+&nbsp;&nbsp;&nbsp;&nbsp;use text VGA mode, and make a file-operations of it. <br/>
 
 `1.440s-lib`:  
-&nbsp;&nbsp;&nbsp;&nbsp;make some macros about assembly
+&nbsp;&nbsp;&nbsp;&nbsp;make some macros about assembly. <br/>
 
+
+`1.562s-init`: 
+&nbsp;&nbsp;&nbsp;&nbsp;new head.s, re-init GDT and IDT. <br/>

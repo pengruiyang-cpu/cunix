@@ -58,5 +58,14 @@ struct vga_inode {
 
 extern struct vga_inode stdout;
 
+
+struct inode_desc *vga_open(char *, __uint32_t, __uint32_t, errno_t *);
+errno_t vga_creat(char *, __uint32_t, __uint32_t);
+errno_t vga_read(struct inode_desc *, char *, __uint64_t);
+errno_t vga_fill(char *, __uint32_t, __uint32_t, struct vga_inode *);
+errno_t vga_write(struct vga_inode *, char *, __uint64_t);
+errno_t vga_lseek(struct inode_desc *, __uint32_t off, __uint32_t seg);
+void vga_close(struct inode_desc *);
+
 #endif
 
