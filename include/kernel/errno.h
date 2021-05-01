@@ -62,7 +62,7 @@ typedef __uint32_t errno_t;
 #define E_HNOSUP 0x00000004 | E_DENIED
 
 /* user error (caller) */
-#define E_UERROR 0x80000000 | E_UERROR
+#define E_UERROR 0x80000000
 
 
 /* syntax error for this call (invalid argument) */

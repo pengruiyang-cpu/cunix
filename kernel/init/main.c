@@ -28,15 +28,8 @@
 #include <kernel/types.h>
 #include <kernel/errno.h>
 
-#include <kernel/vgatext.h>
-#include <kernel/print.h>
-
-
 
 
 void init(void) {
-	vga_fill(NULL, 0, 0, &stdout);
-	print("kernel starting\n");
-
 	for (;;);
 }

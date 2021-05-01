@@ -22,6 +22,10 @@ org 0x8000
 
 jmp _start
 
+CYLINDERS_READ equ 10
+SECTORS_READ equ CYLINDERS_READ * 2 * 18
+SIZE_READ equ SECTORS_READ * 512
+
 %include "arch/x86/segment.inc"
 %include "arch/x86/paging.inc"
 
@@ -45,23 +49,6 @@ _start:
 	mov cr0, eax
 
 	jmp dword code32:init_protect_mode
-
-print:
-	mov al, [si]
-	add si, 1
-	
-	cmp al, 0x00
-	je .do_ret
-
-	mov ah, 0x0e
-	mov bx, 0x0f
-
-	int 0x10
-
-	jmp print
-
-.do_ret:
-	ret
 
 
 bits 32
@@ -98,16 +85,6 @@ init_protect_mode:
 	mov dword [0x72010], 0x400000 | PAGE_KERNEL
 	mov dword [0x72014], 0x000000
 
-	mov dword [0x72018], 0x600000 | PAGE_KERNEL
-	mov dword [0x7201c], 0x000000
-	
-	mov dword [0x72020], 0x800000 | PAGE_KERNEL
-	mov dword [0x72024], 0x000000
-	
-	mov dword [0x72028], 0xa00000 | PAGE_KERNEL
-	mov dword [0x7202c], 0x000000
-	
-	
 
 	lgdt [gdt64_descriptor]
 
@@ -155,7 +132,31 @@ init_long_mode:
 	mov ss, ax
 	mov rsp, 0x0000000000007c00
 
-	jmp 0x8200
+	; copy kernel to 0x100000
+	mov rsi, 0x8200
+	mov rdi, 0x100000
+	mov rcx, SIZE_READ / 8
+
+	call memcpy8
+
+	mov rax, 0x100000
+
+	push code64
+	push rax
+
+	lret
+
+
+memcpy8:
+	; SI = source, DI = dest, CX = count of 8 bytes
+	mov rax, [rsi]
+	mov [rdi], rax
+
+	sub rcx, 8
+	cmp rcx, 0
+	jne memcpy8
+
+	ret
 
 gdt32:
 	dd 0x00000000, 0x00000000

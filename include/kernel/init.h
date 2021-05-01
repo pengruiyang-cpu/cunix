@@ -51,27 +51,30 @@ struct inode_desc {
 
 	/* this is optional too */
 	char *name;
+
+	/* real inode saves here */
+	void *real_inode;
 };
 
 
 struct file_operations {
 	/* open a file */
-	struct inode_desc * (* open) (char *name, __uint32_t type, __uint32_t mode, __uint32_t *errno);
+	struct inode_desc * (* open) (char *, __uint32_t, __uint32_t, errno_t *);
 
 	/* or create one */
 
 	/* `creat` doesn't return file-descriptor, it returns errno */
-	errno_t (* creat) (char *name, __uint32_t type, __uint32_t mode);
+	errno_t (* creat) (char *, __uint32_t, __uint32_t);
 
 	/* `fill` fills a inode descriptor */
-	errno_t (* fill) (char *name, __uint32_t type, __uint32_t mode, struct inode_desc *i);
+	errno_t (* fill) (char *, __uint32_t, __uint32_t, struct inode_desc *);
 
 
 	/* read from file-descriptor */
-	errno_t (* read) (struct inode_desc *i, char *buffer, __uint64_t l);
+	errno_t (* read) (struct inode_desc *, char *, __uint64_t);
 	
 	/* write to file-descriptor */
-	errno_t (* write) (struct inode_desc *i, char *buffer, __uint64_t l);
+	errno_t (* write) (struct inode_desc *, char *, __uint64_t);
 
 	/* change position */
 
@@ -81,10 +84,10 @@ struct file_operations {
 #define SEEK_CUR 0x0002
 #define SEEK_END 0x0003
 
-	__uint32_t (* lseek) (struct inode_desc *i, __uint32_t off, __uint32_t seg);
+	__uint32_t (* lseek) (struct inode_desc *, __uint32_t, __uint32_t);
 
 	/* close a file-descriptor */
-	void (* close) (struct inode_desc *i);
+	void (* close) (struct inode_desc *);
 };
 
 

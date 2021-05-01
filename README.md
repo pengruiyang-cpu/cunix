@@ -64,3 +64,7 @@ Cunix kernel
 
 `1.562s-init`: 
 &nbsp;&nbsp;&nbsp;&nbsp;new head.s, re-init GDT and IDT. <br/>
+
+`1.217s-init`: 
+&nbsp;&nbsp;&nbsp;&nbsp;nt for file-operations, and remove all modules. <br/>
+

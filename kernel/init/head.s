@@ -53,7 +53,7 @@ switch_segment:
 
 	movq %rax, %ss
 	movq $0x0000000000007c00, %rsp
-	
+
 	movq init_kernel(%rip), %rax
 	pushq $0x08
 	pushq %rax
@@ -63,6 +63,11 @@ switch_segment:
 
 init_kernel:
 	.quad init
+
+
+
+setup_pde:
+	
 
 
 
@@ -103,12 +108,18 @@ gdt_desc:
 .globl idt_table
 
 idt_table:
-	.fill 256, 16, 0
+	/* this will takes a warning */
+	/* .fill 256, 16, 0 */
+
+	.fill 512, 8, 0
+
 
 end_idt:
 
 idt_desc:
 	.word end_idt - idt_table
 	.quad idt_table
+
+
 
 

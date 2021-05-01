@@ -1,0 +1,11 @@
+CFLAGS = -mcmodel=large -fno-builtin -m64 -I ../../../include -Wall -Werror -O3
+
+
+all: $(OBJS)
+
+%.o: %.c
+	gcc -c $*.c $(CFLAGS)
+
+clear: 
+	rm *.o
+
