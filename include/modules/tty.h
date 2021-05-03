@@ -24,15 +24,7 @@
 
 
 
-#include <kernel/init.h>
-#include <kernel/types.h>
-#include <kernel/errno.h>
+/* kernel/asm/tty.c */
 
-#include <modules/tty.h>
+void putc(char c);
 
-
-void init(void) {
-	putc('C');
-
-	for (;;);
-}

@@ -24,15 +24,33 @@
 
 
 
-#include <kernel/init.h>
-#include <kernel/types.h>
-#include <kernel/errno.h>
+.text
+.align 8
 
-#include <modules/tty.h>
+.globl putc
+
+putc:
+	/* character is in EDI */
+	movl %edi, %eax
+
+	/* rdi = *framebuffer */
+	movq framebuffer(%rip), %rdi
+
+	/* (es:di) = al, di++ */
+	cld
+	stosb
+
+	movb 0xf0, %al
+	stosb
+
+	movq %rdi, (framebuffer)
+
+	ret
 
 
-void init(void) {
-	putc('C');
 
-	for (;;);
-}
+.data
+.align 8
+
+framebuffer: .quad 0x000b8000
+

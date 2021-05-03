@@ -68,3 +68,6 @@ Cunix kernel
 `1.217s-init`: 
 &nbsp;&nbsp;&nbsp;&nbsp;nt for file-operations, and remove all modules. <br/>
 
+`1.302s-module`: 
+&nbsp;&nbsp;&nbsp;&nbsp;there is a bug with loader: it cannot load kernel because 0 - 8 = -8 (not 0). <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;so we read it byte by byte. and we used assembly to wrote a tty driver. It just can putchar now. <br/>

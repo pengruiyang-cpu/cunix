@@ -1,7 +1,7 @@
-SRCS = tty/tty.c
+SRCS = 
 
-all: $(SRCS) 
-	make -C tty/
+all: $(SRCS)
 
-clear: 
-	make -C tty/ clear
+
+clear:
+	

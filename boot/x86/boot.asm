@@ -20,6 +20,7 @@
 CYLINDERS_NEED equ 10
 
 org 0x7c00
+align 8
 
 _start:
 	xor ax, ax
@@ -45,9 +46,9 @@ _start:
 	jmp 0x0000:0x8000
 
 
-message: db "Cunix is booting...", 0x0d, 0x0a, 0x00
+message: db "Loading System", 0x0d, 0x0a, 0x00
 diskpanic_message: db "read disk failed", 0x0d, 0x0a, 0x00
-panic_message: db "panic: ", 0x00
+panic_message: db "boot panic: ", 0x00
 
 %include "arch/x86/readdisk.inc"
 
@@ -102,9 +103,10 @@ read_it:
 	; call -> BIOS
 	int 0x13
 
-	; if error
+	; if not error
 	jnc .cont_read
 	
+	; okay, something wrong. best way is reset it. 
 .error:
 	add si, 1
 	; we try it for 5 times
@@ -133,7 +135,9 @@ read_it:
 	add cl, 1
 
 	; if read done
+
 SECTORS_1_TRACK equ 18
+
 	cmp cl, SECTORS_1_TRACK
 	jbe .read_loop
 
@@ -145,7 +149,7 @@ HEADS_1_CYLINDER equ 2
 	
 	jb .read_loop
 
-.update_head
+.update_head:
 	mov dh, 0
 	add ch, 1
 	cmp ch, CYLINDERS_NEED

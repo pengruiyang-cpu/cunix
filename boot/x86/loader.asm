@@ -19,6 +19,7 @@
 
 
 org 0x8000
+align 8
 
 jmp _start
 
@@ -62,6 +63,13 @@ init_protect_mode:
 
 	mov ss, ax
 	mov esp, 0x00007c00
+
+.copy_kernel:
+	mov esi, 0x8200
+	mov edi, 0x100000
+	mov ecx, SIZE_READ
+
+	call memcpy
 
 .to_long_mode:
 	; page map at 0x7000
@@ -116,45 +124,29 @@ init_protect_mode:
 	or eax, 1
 	bts eax, 31
 	mov cr0, eax
-	
-	
-	jmp code64:init_long_mode
 
-bits 64
-
-init_long_mode:
 	mov ax, 0x10
 	mov ds, ax
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
-
 	mov ss, ax
-	mov rsp, 0x0000000000007c00
-
-	; copy kernel to 0x100000
-	mov rsi, 0x8200
-	mov rdi, 0x100000
-	mov rcx, SIZE_READ / 8
-
-	call memcpy8
-
-	mov rax, 0x100000
-
-	push code64
-	push rax
-
-	lret
+	
+	jmp code64:0x100000
 
 
-memcpy8:
-	; SI = source, DI = dest, CX = count of 8 bytes
-	mov rax, [rsi]
-	mov [rdi], rax
+memcpy:
+	; if no this, loop will --ecx and ecx will be 0xffffffff. 
+	cmp ecx, 0
+	jne .copy
 
-	sub rcx, 8
-	cmp rcx, 0
-	jne memcpy8
+	ret
+
+.copy:
+	lodsb
+	stosb
+
+	loop .copy
 
 	ret
 
