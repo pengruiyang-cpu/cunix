@@ -73,6 +73,10 @@ Cunix kernel
 &nbsp;&nbsp;&nbsp;&nbsp;so we read it byte by byte. and we used assembly to wrote a tty driver. It just can putchar now. <br/>
 
 `1.690s-module`: 
-&nbsp;&nbsp;&nbsp;&nbsp;new function printf, put format string on screen. 
-&nbsp;&nbsp;&nbsp;&nbsp;and, new panic.S to `kernel panic`. 
+&nbsp;&nbsp;&nbsp;&nbsp;new function printf, put format string on screen. <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;and, new panic.S to `kernel panic`. <br/>
+
+
+`1.727s-module`: 
+&nbsp;&nbsp;&nbsp;&nbsp;add support '\n' for printf. <br/>
 

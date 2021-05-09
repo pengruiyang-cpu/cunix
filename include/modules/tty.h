@@ -37,6 +37,8 @@
 #define CURSORCTL_POSHI 0x0e
 #define CURSORCTL_POSLO 0x0f
 
+#define TEXT_VGA_X 80
+
 
 #ifndef ASSEMBLY
 

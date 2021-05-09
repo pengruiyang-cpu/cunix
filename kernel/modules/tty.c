@@ -37,6 +37,9 @@
 
 
 
+/* variables in .data will initialize by value 0 */
+int x, y;
+
 __uint16_t read_cursor(void) {
 	__uint16_t pos = 0;
 
@@ -63,6 +66,15 @@ void write_cursor(__uint16_t pos) {
 
 
 
+void update_cursor(void) {
+	__uint16_t pos = y * TEXT_VGA_X + x;
+	write_cursor(pos);
+
+	return;
+}
+
+
+
 __uint64_t printf(const char *s, ...) {
 	/* l: character puts (no '%') */
 	__uint64_t i, l;
@@ -72,8 +84,11 @@ __uint64_t printf(const char *s, ...) {
 	char *fmt_s;
 	va_list values;
 
+	int newlines;
+
 	va_start(values, s);
 	state = 0;
+	newlines = 0;
 
 	for (i = 0, l = 0; s[i]; i++) {
 		c = s[i];
@@ -86,8 +101,17 @@ __uint64_t printf(const char *s, ...) {
 
 			/* c != '%' (it's not a formater), put it */
 			else {
-				putc(c);
-				l++;
+				/* if it's \n */
+				if (c == '\n') {
+					/* new line, and reset x */
+					newlines++;
+				}
+
+				else {
+					putc(c);
+					l++;
+				}
+
 				continue;
 			}
 		}
@@ -141,7 +165,18 @@ __uint64_t printf(const char *s, ...) {
 
 
 	/* update cursor position */
-	write_cursor(read_cursor() + (__uint16_t) l);
+	x += l;
+	if (x > TEXT_VGA_X) {
+		x = TEXT_VGA_X - x;
+		y++;
+	}
+
+	y += newlines;
+
+	if (newlines) 
+		x = 0;
+
+	update_cursor();
 
 	va_end(values);
 

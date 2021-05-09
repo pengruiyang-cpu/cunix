@@ -37,7 +37,7 @@ void init(void) {
 	tty_init();
 
 
-	printf("cunix kernel %d is starting...", 1690);
+	printf("cunix kernel %d is starting...\n", 1727);
 
 	for (;;);
 }
