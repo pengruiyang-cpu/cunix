@@ -24,7 +24,10 @@
 
 
 
+#ifndef INCLUDED_RLIB_H
+#define INCLUDED_RLIB_H
+
 #include <lib/bitmap.h>
 #include <lib/bitman.h>
 
-
+#endif

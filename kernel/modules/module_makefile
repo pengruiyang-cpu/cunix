@@ -1,4 +1,4 @@
-CFLAGS = -mcmodel=large -fno-builtin -m64 -I ../../../include -Wall -Werror -O3
+CFLAGS = -mcmodel=large -fno-builtin -m64 -I ../../../include -Wall -Werror -O3 -fno-stackcheck
 
 
 all: $(OBJS)

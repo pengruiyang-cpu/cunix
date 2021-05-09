@@ -1,4 +1,4 @@
-all: tty.o
+all: tty.o panic.o
 
 %.o: %.S
 	gcc -E $*.S -I ../../include > $*.s

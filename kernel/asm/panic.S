@@ -24,49 +24,61 @@
 
 
 
-#define ASSEMBLY
-#include <modules/tty.h>
-
-
-
 .text
 .align 8
 
 
+.globl panic
 
-.globl tty_init
+panic:
+	leaq panic_msg(%rip), %rsi
+	call print
 
-tty_init:
-	pushq %rsi
+	movq %rdi, %rsi
+	call print
+
+die:
+	hlt
+	jmp die
+
+
+
+.globl __stack_chk_fail
+
+__stack_chk_fail:
+	/* display on screen: kernel panic: stack check failed. */
+	leaq stackfail_msg(%rip), %rdi
+	call panic
+
+	/* it never go here */
+
+
+
+/* no `.globl` with this. this is temporary */
+print:
 	pushq %rdi
-
-	/* set cursor position */
-	movw $0x0000, %di
-	call write_cursor
-
-	popq %rdi
-	popq %rsi
-
-	ret
+	/* message address in RSI */
+	movq tmp_fb(%rip), %rdi
 	
 
-.globl putc
-
-putc:
-	pushq %rdi
-
-	/* character is in EDI */
-	movl %edi, %eax
-
-	/* rdi = *framebuffer */
-	movq framebuffer(%rip), %rdi
-	movb $0x0f, %ah
-
+	/* RDI / RSI ++ */
 	cld
+
+	movb $0x07, %ah
+
+.loop:
+	/* load to AL from RSI */
+	lodsb
+	cmpb $0x00, %al
+	je .ret
+
+	/* store to RDI from AX */
 	stosw
 
-	movq %rdi, (framebuffer)
+	jmp .loop
 
+.ret:
+	movq %rdi, tmp_fb(%rip)
 	popq %rdi
 	ret
 
@@ -75,6 +87,6 @@ putc:
 .data
 .align 8
 
-framebuffer: .quad 0x000b8000
-
-
+panic_msg: .asciz "kernel panic: "
+stackfail_msg: .asciz "stack check failed"
+tmp_fb: .quad 0x00000000000b8000

@@ -71,3 +71,8 @@ Cunix kernel
 `1.302s-module`: 
 &nbsp;&nbsp;&nbsp;&nbsp;there is a bug with loader: it cannot load kernel because 0 - 8 = -8 (not 0). <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;so we read it byte by byte. and we used assembly to wrote a tty driver. It just can putchar now. <br/>
+
+`1.690s-module`: 
+&nbsp;&nbsp;&nbsp;&nbsp;new function printf, put format string on screen. 
+&nbsp;&nbsp;&nbsp;&nbsp;and, new panic.S to `kernel panic`. 
+

@@ -28,11 +28,16 @@
 #include <kernel/types.h>
 #include <kernel/errno.h>
 
+#include <kernel/panic.h>
+
 #include <modules/tty.h>
 
 
 void init(void) {
-	putc('C');
+	tty_init();
+
+
+	printf("cunix kernel %d is starting...", 1690);
 
 	for (;;);
 }

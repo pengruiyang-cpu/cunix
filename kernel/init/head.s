@@ -24,6 +24,7 @@
 
 
 
+.align 8
 .text
 
 .globl _start
@@ -71,6 +72,7 @@ setup_pde:
 
 
 
+.align 8
 .data
 
 .globl gdt_table

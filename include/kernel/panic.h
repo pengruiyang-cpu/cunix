@@ -24,44 +24,12 @@
 
 
 
-#ifndef INCLUDED_TTY_H
-#define INCLUDED_TTY_H
-
-/* index register of cursor */
-#define CURSOR_INDEX 0x03d4
-
-/* data register of cursor */
-#define CURSOR_DATA  0x03d5
-
-/* write to CURSOR_INDEX */
-#define CURSORCTL_POSHI 0x0e
-#define CURSORCTL_POSLO 0x0f
+#ifndef INCLUDED_PANIC_H
+#define INCLUDED_PANIC_H
 
 
-#ifndef ASSEMBLY
-
-#include <stdarg.h>
-
-/* kernel/asm/tty.c */
-
-void tty_init(void);
-
-void putc(char c);
-
-/* kernel/modules/tty.c */
-
-/* return value: length of string printed */
-
-/* we use number formats (1B per format), not % */
-__uint64_t printf(const char *fmt, ...);
-
-__uint64_t printint(long, int, int);
-
-__uint16_t read_cursor(void);
-
-void write_cursor(__uint16_t pos);
+/* kernel/asm/panic.S */
+void panic(char *s);
 
 #endif
 
-
-#endif

@@ -37,16 +37,11 @@ _start:
 	; boot device driver number is in DL (by BIOS-19)
 	mov [BI_BOOTDEV], dl
 
-
-	mov si, message
-	call print
-
 	call read_it
 
 	jmp 0x0000:0x8000
 
 
-message: db "Loading System", 0x0d, 0x0a, 0x00
 diskpanic_message: db "read disk failed", 0x0d, 0x0a, 0x00
 panic_message: db "boot panic: ", 0x00
 
