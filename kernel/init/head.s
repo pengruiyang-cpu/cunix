@@ -32,16 +32,13 @@ _start:
 	lgdt gdt_desc(%rip)
 	lidt idt_desc(%rip)
 
-	/* first, setup segment descriptor (for future) */
-	movq setup_segment(%rip), %rax
+	/* first, setup segment descriptor */
+	leaq switch_segment(%rip), %rax
 
 	pushq $0x08
 	pushq %rax
 	lretq
 
-
-setup_segment:
-	.quad switch_segment
 
 
 switch_segment:
@@ -55,25 +52,62 @@ switch_segment:
 	movq %rax, %ss
 	movq $0x0000000000007c00, %rsp
 
-	movq init_kernel(%rip), %rax
+	callq setup_idt
+
+	/* now enable interrupt */
+	sti
+
+	leaq init(%rip), %rax
 	pushq $0x08
 	pushq %rax
 
 	lretq
 	
 
-init_kernel:
-	.quad init
+
+setup_idt:
+	leaq default_int(%rip), %rdx
+	movq $(0x08 << 16), %rax
+	movw %dx, %ax
+	movq $(0x8e00 << 32), %rcx
+	addq %rcx, %rax
+	movl %edx, %ecx
+	shrl $16, %ecx
+	shlq $48, %rcx
+	addq %rcx, %rax
+	shrq $32, %rdx
+	leaq idt_table(%rip), %rdi
+	movq $256, %rcx
+
+rep_sidt:
+	movq %rax, (%rdi)
+	movq %rdx, 8(%rdi)
+	addq $0x10, %rdi
+	dec %rcx
+	jnz rep_sidt
+
+	retq
 
 
 
-setup_pde:
-	
+default_int:
+	leaq int_msg(%rip), %rdi
+	call printf
+
+die:
+	hlt
+	jmp die
+
+	iretq
 
 
 
 .align 8
 .data
+
+
+int_msg: .asciz "unknow interrupt or fault"
+
 
 .globl gdt_table
 

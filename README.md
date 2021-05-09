@@ -80,3 +80,5 @@ Cunix kernel
 `1.727s-module`: 
 &nbsp;&nbsp;&nbsp;&nbsp;add support '\n' for printf. <br/>
 
+`1.760s-module`: 
+&nbsp;&nbsp;&nbsp;&nbsp;accept fault or interrupt in head.s <br/>
