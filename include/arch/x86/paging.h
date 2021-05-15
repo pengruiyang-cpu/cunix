@@ -23,58 +23,40 @@
 
 
 
-
-#define ASSEMBLY
-#include <modules/tty.h>
-
+#ifndef INCLUDED_PAGING_H
+#define INCLUDED_PAING_H
 
 
-.text
-.align 8
+#define PAGE_PRESENT  0x0001
+
+#define PAGE_RDWR     0x0002
+
+#define PAGE_USER     0x0004
+
+#define PAGE_NWRBACK  0x0008
+
+#define PAGE_NOCACHE  0x0010
+
+#define PAGE_ACCESSED 0x0020
+
+#define PAGE_DIRTY    0x0040
+
+#define PAGE_PAT      0x0080
+
+#define PAGE_GLOBAL   0x0100
 
 
+/* 0x83 */
+#define PATT_KERNEL (PAGE_PRESENT | PAGE_RDWR | PAGE_PAT)
 
-.globl tty_init
-
-tty_init:
-	pushq %rsi
-	pushq %rdi
-
-	/* set cursor position */
-	movw $0x0000, %di
-	call write_cursor
-
-	popq %rdi
-	popq %rsi
-
-	ret
-	
-
-.globl putc
-
-putc:
-	pushq %rdi
-
-	/* character is in EDI */
-	movl %edi, %eax
-
-	/* rdi = *framebuffer */
-	movq framebuffer(%rip), %rdi
-	movb $0x0f, %ah
-
-	cld
-	stosw
-
-	movq %rdi, framebuffer(%rip)
-
-	popq %rdi
-	ret
+/* 0x07 */
+#define PATT_USER   (PAGE_PRESENT | PAGE_RDWR | PAGE_USER)
 
 
+#define PML4_ADDR 0x70000
+#define PDPT_ADDR 0x71000
+#define PTE_ADDR  0x72000
 
-.data
-.align 8
+#define PAGE_SIZE 0x200000
 
-framebuffer: .quad 0x00000000000b8000
-
-
+#endif

@@ -82,3 +82,7 @@ Cunix kernel
 
 `1.760s-module`: 
 &nbsp;&nbsp;&nbsp;&nbsp;accept fault or interrupt in head.s <br/>
+
+`1.879s-memory`: 
+&nbsp;&nbsp;&nbsp;&nbsp;init page table in head.S, it can map 0-64MB memory (32 pages). <br/>
+

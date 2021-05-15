@@ -60,7 +60,6 @@ print:
 	/* message address in RSI */
 	movq tmp_fb(%rip), %rdi
 	
-
 	/* RDI / RSI ++ */
 	cld
 
@@ -83,10 +82,10 @@ print:
 	ret
 
 
-
 .data
 .align 8
 
 panic_msg: .asciz "kernel panic: "
 stackfail_msg: .asciz "stack check failed"
 tmp_fb: .quad 0x00000000000b8000
+

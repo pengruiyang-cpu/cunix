@@ -5,10 +5,11 @@ all: main.o head.o
 %.o: %.c
 	gcc -c $*.c $(C_FLAGS)
 
-head.o: head.s
-	as --64 head.s -o head.o  
+head.o: head.S
+	gcc -E head.S -I ../../include/ > head.s
+	as --64 head.s -o head.o 
 
 
 clear:
-	rm *.o
+	rm *.o head.s
 
