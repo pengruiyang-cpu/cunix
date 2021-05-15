@@ -1,6 +1,6 @@
 C_FLAGS = -mcmodel=large -fno-builtin -m64 -I ../../include/ -Wall -Werror -O3
 
-all: main.o head.o
+all: main.o panic.o head.o
 
 %.o: %.c
 	gcc -c $*.c $(C_FLAGS)

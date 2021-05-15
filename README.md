@@ -62,27 +62,29 @@ Cunix kernel
 &nbsp;&nbsp;&nbsp;&nbsp;make some macros about assembly. <br/>
 
 
-`1.562s-init`: 
+`1.562s-init`:  
 &nbsp;&nbsp;&nbsp;&nbsp;new head.s, re-init GDT and IDT. <br/>
 
-`1.217s-init`: 
+`1.217s-init`:  
 &nbsp;&nbsp;&nbsp;&nbsp;nt for file-operations, and remove all modules. <br/>
 
-`1.302s-module`: 
+`1.302s-module`:  
 &nbsp;&nbsp;&nbsp;&nbsp;there is a bug with loader: it cannot load kernel because 0 - 8 = -8 (not 0). <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;so we read it byte by byte. and we used assembly to wrote a tty driver. It just can putchar now. <br/>
 
-`1.690s-module`: 
+`1.690s-module`:  
 &nbsp;&nbsp;&nbsp;&nbsp;new function printf, put format string on screen. <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;and, new panic.S to `kernel panic`. <br/>
 
 
-`1.727s-module`: 
+`1.727s-module`:  
 &nbsp;&nbsp;&nbsp;&nbsp;add support '\n' for printf. <br/>
 
-`1.760s-module`: 
+`1.760s-module`:  
 &nbsp;&nbsp;&nbsp;&nbsp;accept fault or interrupt in head.s <br/>
 
-`1.879s-memory`: 
+`1.879s-memory`:  
 &nbsp;&nbsp;&nbsp;&nbsp;init page table in head.S, it can map 0-64MB memory (32 pages). <br/>
 
+`2.086s-module`:  
+&nbsp;&nbsp;&nbsp;&nbsp;support 'roll' screen, and create some functions (string.h). <br/>

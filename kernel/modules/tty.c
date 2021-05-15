@@ -32,6 +32,8 @@
 #include <arch/io.h>
 #include <arch/sys.h>
 
+#include <lib/string.h>
+
 #include <stdarg.h>
 
 
@@ -39,6 +41,8 @@
 
 /* variables in .data will initialize by value 0 */
 int x, y;
+
+extern __uint64_t framebuffer;
 
 __uint16_t read_cursor(void) {
 	__uint16_t pos = 0;
@@ -69,6 +73,8 @@ void write_cursor(__uint16_t pos) {
 void update_cursor(void) {
 	__uint16_t pos = y * TEXT_VGA_X + x;
 	write_cursor(pos);
+
+	framebuffer = 0xb8000 + pos * 2;
 
 	return;
 }
@@ -127,6 +133,11 @@ __uint64_t printf(const char *s, ...) {
 				l += printint((long) va_arg(values, long), 16, 0);
 			}
 
+			else if (c == 'p') {
+				/* zeros at high bits should display, not like `%x` or `%d` */
+				l += printptr((__uint64_t) va_arg(values, __uint64_t));
+			}
+
 			else if (c == 's') {
 				fmt_s = (char *) va_arg(values, char *);
 				if (!fmt_s) 
@@ -153,7 +164,7 @@ __uint64_t printf(const char *s, ...) {
 			}
 
 			else {
-				/* don't forget put % */
+				/* don't forget to put % */
 				putc('%');
 				putc(c);
 				l++;
@@ -176,6 +187,11 @@ __uint64_t printf(const char *s, ...) {
 	if (newlines) 
 		x = 0;
 
+	if (y > TEXT_VGA_Y) {
+		y = 0;
+		clear_line(0);
+	}
+
 	update_cursor();
 
 	va_end(values);
@@ -184,8 +200,10 @@ __uint64_t printf(const char *s, ...) {
 }
  
 
+static char digits[] = {"0123456789abcdef"};
+
+
 __uint64_t printint(long n, int base, int sign) {
-	static char digits[] = {"0123456789abcdef"};
 	char buf[32];
 	/* neg: x < 0 && signed interger */
 	int i, neg, j;
@@ -218,3 +236,37 @@ __uint64_t printint(long n, int base, int sign) {
 
 	return i;
 }
+
+
+
+__uint64_t printptr(__uint64_t p) {
+	int i;
+
+	for (i = 15; i >= 0; i--) {
+		char c = (p >> (i * 4)) & 0x0f;
+
+		if (c > 9) 
+			c = c - 10 + 'a';
+		
+		else 
+			c += '0';
+
+		putc(c);
+	}
+
+	return 16;
+}
+
+
+#define LINE_ADDR(l) ((char *) (__uint64_t) (0xb8000 + (l) * TEXT_VGA_X * 2))
+
+
+void clear_line(int line) {
+	char *p = LINE_ADDR(line);
+
+	memsetw(p, 0x0720, TEXT_VGA_X * 2);
+
+	return;
+}
+
+

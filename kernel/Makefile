@@ -1,4 +1,4 @@
-OBJS = init/head.o init/main.o lib/bitmap.o lib/bitman.o asm/tty.o modules/tty.o asm/panic.o
+OBJS = init/head.o init/main.o lib/bitmap.o lib/bitman.o asm/tty.o modules/tty.o asm/panic.o init/panic.o
 
 default:
 	make -C init/

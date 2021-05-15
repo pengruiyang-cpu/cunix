@@ -28,21 +28,6 @@
 .align 8
 
 
-.globl panic
-
-panic:
-	leaq panic_msg(%rip), %rsi
-	call print
-
-	movq %rdi, %rsi
-	call print
-
-die:
-	hlt
-	jmp die
-
-
-
 .globl __stack_chk_fail
 
 __stack_chk_fail:
@@ -53,39 +38,8 @@ __stack_chk_fail:
 	/* it never go here */
 
 
-
-/* no `.globl` with this. this is temporary */
-print:
-	pushq %rdi
-	/* message address in RSI */
-	movq tmp_fb(%rip), %rdi
-	
-	/* RDI / RSI ++ */
-	cld
-
-	movb $0x07, %ah
-
-.loop:
-	/* load to AL from RSI */
-	lodsb
-	cmpb $0x00, %al
-	je .ret
-
-	/* store to RDI from AX */
-	stosw
-
-	jmp .loop
-
-.ret:
-	movq %rdi, tmp_fb(%rip)
-	popq %rdi
-	ret
-
-
 .data
 .align 8
 
-panic_msg: .asciz "kernel panic: "
 stackfail_msg: .asciz "stack check failed"
-tmp_fb: .quad 0x00000000000b8000
 

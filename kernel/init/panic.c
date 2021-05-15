@@ -24,60 +24,43 @@
 
 
 
-#define ASSEMBLY
+#include <kernel/init.h>
+#include <kernel/types.h>
+#include <kernel/errno.h>
+
+#include <arch/sys.h>
 #include <modules/tty.h>
 
 
 
-.text
-.align 8
+void panic(char *s) {
+	__uint64_t a, b, c;
 
+	a = get_rax(); b = get_rcx(); c = get_rdx();
 
+	printf("RAX: %p  RCX: %p  RDX: %p\n", a, b, c);
 
-.globl tty_init
+	a = get_rbx(); b = get_rsp(); c = get_rbp();
 
-tty_init:
-	pushq %rsi
-	pushq %rdi
+	printf("RBX: %p  RSP: %p  RBP: %p\n", a, b, c);
 
-	/* set cursor position */
-	movw $0x0000, %di
-	call write_cursor
+	a = get_rsi(); b = get_rdi(); c = get_r8();
 
-	popq %rdi
-	popq %rsi
+	printf("RSI: %p  RDI: %p  R8 : %p\n", a, b, c);
 
-	ret
-	
+	a = get_r9(); b = get_r10(); c = get_r11();
 
-.globl putc
+	printf("R9: %p   R10: %p  R11: %p\n", a, b, c);
 
-putc:
-	pushq %rdi
+	a = get_r12(); b = get_r13(); c = get_r14();
 
-	/* character is in EDI */
-	movl %edi, %eax
+	printf("R12: %p  R13: %p  R14: %p\n", a, b, c);
 
-	/* rdi = *framebuffer */
-	movq framebuffer(%rip), %rdi
-	movb $0x0f, %ah
+	a = get_r15();
 
-	cld
-	stosw
+	printf("R15: %p\n", a);
 
-	movq %rdi, framebuffer(%rip)
-	
-	/* return 0 */
-	xorq %rax, %rax
+	printf("\nKernel panic: %s\n", s);
 
-	popq %rdi
-	ret
-
-
-.data
-.align 8
-
-.globl framebuffer
-framebuffer: .quad 0x00000000000b8000
-
-
+	for (;;);
+}

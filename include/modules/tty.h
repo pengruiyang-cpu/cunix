@@ -38,7 +38,7 @@
 #define CURSORCTL_POSLO 0x0f
 
 #define TEXT_VGA_X 80
-
+#define TEXT_VGA_Y 25
 
 #ifndef ASSEMBLY
 
@@ -61,7 +61,12 @@ __uint64_t printint(long, int, int);
 
 __uint16_t read_cursor(void);
 
+__uint64_t printptr(__uint64_t);
+
 void write_cursor(__uint16_t pos);
+
+void clear_line(int line);
+
 
 #endif
 

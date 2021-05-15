@@ -41,4 +41,31 @@
 #define hlt() __asm__ __volatile__ ("hlt");
 
 
+#define getreg(regname) ({ \
+	__uint64_t res; \
+	__asm__ __volatile__ ("movq %%" regname ", %0" : "=r" (res)); \
+	res; \
+})
+
+#define get_rax() getreg("rax")
+#define get_rcx() getreg("rcx")
+#define get_rdx() getreg("rdx")
+#define get_rbx() getreg("rbx")
+
+#define get_rsp() getreg("rsp")
+#define get_rbp() getreg("rbp")
+#define get_rsi() getreg("rsi")
+#define get_rdi() getreg("rdi")
+
+#define get_r8()  getreg("r8")
+#define get_r9()  getreg("r9")
+#define get_r10() getreg("r10")
+#define get_r11() getreg("r11")
+
+#define get_r12() getreg("r12")
+#define get_r13() getreg("r13")
+#define get_r14() getreg("r14")
+#define get_r15() getreg("r15")
+
+
 #endif
